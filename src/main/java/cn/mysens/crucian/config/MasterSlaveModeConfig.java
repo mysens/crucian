@@ -1,0 +1,80 @@
+package cn.mysens.crucian.config;
+
+/**
+ * <br>
+ *
+ * @author 张成<br>
+ * @date 2019年01月22日<br>
+ */
+public class MasterSlaveModeConfig {
+
+    private String masterAddress;
+
+    private String[] slaveAddress;
+
+    private int slaveConnectionMinimumIdleSize = 32;
+
+    private int slaveConnectionPoolSize = 64;
+
+    private int masterConnectionMinimumIdleSize = 32;
+
+    private int masterConnectionPoolSize = 64;
+
+    private int idleConnectionTimeout = 10000;
+
+    public String getMasterAddress() {
+        return masterAddress;
+    }
+
+    public void setMasterAddress(String masterAddress) {
+        this.masterAddress = masterAddress;
+    }
+
+    public String[] getSlaveAddress() {
+        return slaveAddress;
+    }
+
+    public void setSlaveAddress(String[] slaveAddress) {
+        this.slaveAddress = slaveAddress;
+    }
+
+    public int getSlaveConnectionMinimumIdleSize() {
+        return slaveConnectionMinimumIdleSize;
+    }
+
+    public void setSlaveConnectionMinimumIdleSize(int slaveConnectionMinimumIdleSize) {
+        this.slaveConnectionMinimumIdleSize = slaveConnectionMinimumIdleSize;
+    }
+
+    public int getSlaveConnectionPoolSize() {
+        return slaveConnectionPoolSize;
+    }
+
+    public void setSlaveConnectionPoolSize(int slaveConnectionPoolSize) {
+        this.slaveConnectionPoolSize = slaveConnectionPoolSize;
+    }
+
+    public int getMasterConnectionMinimumIdleSize() {
+        return masterConnectionMinimumIdleSize;
+    }
+
+    public void setMasterConnectionMinimumIdleSize(int masterConnectionMinimumIdleSize) {
+        this.masterConnectionMinimumIdleSize = masterConnectionMinimumIdleSize;
+    }
+
+    public int getMasterConnectionPoolSize() {
+        return masterConnectionPoolSize;
+    }
+
+    public void setMasterConnectionPoolSize(int masterConnectionPoolSize) {
+        this.masterConnectionPoolSize = masterConnectionPoolSize;
+    }
+
+    public int getIdleConnectionTimeout() {
+        return idleConnectionTimeout;
+    }
+
+    public void setIdleConnectionTimeout(int idleConnectionTimeout) {
+        this.idleConnectionTimeout = idleConnectionTimeout;
+    }
+}
