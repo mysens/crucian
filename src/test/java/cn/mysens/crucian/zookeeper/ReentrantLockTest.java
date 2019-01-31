@@ -7,10 +7,7 @@ import cn.mysens.crucian.lock.LockTemplate;
 import cn.mysens.crucian.lock.Locker;
 import cn.mysens.crucian.redis.RedisClient;
 import cn.mysens.crucian.redis.RedisReentrantLock;
-import net.bytebuddy.implementation.bytecode.Throw;
-import org.junit.Assert;
 import org.junit.Test;
-import org.redisson.config.SingleServerConfig;
 
 import static org.junit.Assert.*;
 
