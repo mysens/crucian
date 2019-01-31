@@ -5,7 +5,7 @@
 
 本工具依赖zk或redis环境
 
-#说明
+## 说明
 1. 基于curator-recipes完成zookeeper分布式锁
 1. 基于redisson完成redis分布式锁
 1. 使用方法请参考单元测试ReentrantLockTest
