@@ -21,7 +21,7 @@ public class RedisLocker implements Locker {
 
     private long timeout = -1;
 
-    private TimeUnit timeUnit = TimeUnit.SECONDS;
+    private TimeUnit timeUnit = TimeUnit.MILLISECONDS;
 
     public RedisLocker(RLock rLock) {
         this.locker = rLock;

@@ -50,7 +50,7 @@ public class ZkReentrantLock implements LockTemplate {
     }
 
     private void init(ZkClient zkClient){
-        this.keyPrefix = ROOT_PATH + zkClient.getNameSpace() + SEPARATOR;
+        this.keyPrefix = ROOT_PATH + zkClient.getNamespace() + SEPARATOR;
         this.timeout = zkClient.getTimeout();
         this.client = zkClient.getClient();
         if(client == null){
@@ -63,7 +63,7 @@ public class ZkReentrantLock implements LockTemplate {
         String realKey = this.keyPrefix + key;
         InterProcessMutex interProcessMutex = new InterProcessMutex(client, realKey);
         if(timeout>0){
-            return new ZkLocker(interProcessMutex, timeout, TimeUnit.SECONDS);
+            return new ZkLocker(interProcessMutex, timeout, TimeUnit.MILLISECONDS);
         }
         return new ZkLocker(interProcessMutex);
     }

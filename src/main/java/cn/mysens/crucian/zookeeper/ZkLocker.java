@@ -21,7 +21,7 @@ public class ZkLocker implements Locker {
 
     private long timeout = -1;
 
-    private TimeUnit timeUnit = TimeUnit.SECONDS;
+    private TimeUnit timeUnit = TimeUnit.MILLISECONDS;
 
     ZkLocker(InterProcessLock interProcessLock) {
         locker = interProcessLock;

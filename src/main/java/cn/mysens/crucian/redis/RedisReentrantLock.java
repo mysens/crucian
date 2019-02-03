@@ -41,7 +41,7 @@ public class RedisReentrantLock implements LockTemplate {
     private RedissonClient client;
 
     public RedisReentrantLock(RedisClient redisClient) {
-        this.keyPrefix = ROOT_PATH + redisClient.getNameSpace() + SEPARATOR;
+        this.keyPrefix = ROOT_PATH + redisClient.getNamespace() + SEPARATOR;
         this.timeout = redisClient.getTimeout();
         this.client = redisClient.getClient();
         if(client == null){
@@ -54,7 +54,7 @@ public class RedisReentrantLock implements LockTemplate {
         String realKey = this.keyPrefix + key;
         RLock rLock = client.getLock(realKey);
         if(timeout>0){
-            return new RedisLocker(rLock, timeout, TimeUnit.SECONDS);
+            return new RedisLocker(rLock, timeout, TimeUnit.MILLISECONDS);
         }
         return new RedisLocker(rLock);
     }

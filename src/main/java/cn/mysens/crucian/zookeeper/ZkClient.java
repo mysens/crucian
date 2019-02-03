@@ -17,7 +17,7 @@ public class ZkClient {
     /**
      * 命名路径
      */
-    private String nameSpace;
+    private String namespace;
 
     /**
      * 默认超时时间
@@ -30,15 +30,15 @@ public class ZkClient {
     private CuratorFramework client;
 
     public ZkClient(ZkConfig config) {
-        this.nameSpace = config.getNameSpace();
+        this.namespace = config.getNamespace();
         this.timeout = config.getDefaultTimeout();
         RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
         client = CuratorFrameworkFactory.newClient(config.getZkHosts(), retryPolicy);
         client.start();
     }
 
-    public String getNameSpace() {
-        return nameSpace;
+    public String getNamespace() {
+        return namespace;
     }
 
     public long getTimeout() {

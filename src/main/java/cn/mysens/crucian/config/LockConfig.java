@@ -11,19 +11,19 @@ public class LockConfig {
     /**
      * 命名空间
      */
-    private String nameSpace;
+    private String namespace;
 
     /**
      * 默认超时时间
      */
     private long defaultTimeout;
 
-    public String getNameSpace() {
-        return nameSpace;
+    public String getNamespace() {
+        return namespace;
     }
 
-    public void setNameSpace(String nameSpace) {
-        this.nameSpace = nameSpace;
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
     }
 
     public long getDefaultTimeout() {

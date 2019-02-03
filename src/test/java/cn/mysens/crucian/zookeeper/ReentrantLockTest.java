@@ -23,7 +23,7 @@ public class ReentrantLockTest {
     public void zkLock() throws InterruptedException {
         //zk配置
         ZkConfig zkConfig = new ZkConfig();
-        zkConfig.setNameSpace("zk_test");
+        zkConfig.setNamespace("zk_test");
         zkConfig.setDefaultTimeout(30);
         zkConfig.setZkHosts("127.0.0.1:2181");
         //zk客户端
@@ -61,7 +61,7 @@ public class ReentrantLockTest {
         SingleInstanceModeConfig singleInstanceModeConfig = new SingleInstanceModeConfig();
         singleInstanceModeConfig.setAddress("redis://127.0.0.1:6379");
         redisConfig.setSingleInstanceModeConfig(singleInstanceModeConfig);
-        redisConfig.setNameSpace("redis_test");
+        redisConfig.setNamespace("redis_test");
         redisConfig.setDefaultTimeout(30);
         //zk客户端
         RedisClient redisClient = new RedisClient(redisConfig);

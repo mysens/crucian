@@ -15,7 +15,7 @@ import org.redisson.config.*;
  */
 public class RedisClient {
 
-    private String nameSpace;
+    private String namespace;
 
     private long timeout;
 
@@ -24,7 +24,7 @@ public class RedisClient {
     public RedisClient(RedisConfig config) {
         Config rsConfig = buildRsConfig(config);
         this.client = Redisson.create(rsConfig);
-        this.nameSpace = config.getNameSpace();
+        this.namespace = config.getNamespace();
         this.timeout = config.getDefaultTimeout();
     }
 
@@ -110,8 +110,8 @@ public class RedisClient {
         return rsConfig;
     }
 
-    public String getNameSpace() {
-        return nameSpace;
+    public String getNamespace() {
+        return namespace;
     }
 
     public long getTimeout() {
