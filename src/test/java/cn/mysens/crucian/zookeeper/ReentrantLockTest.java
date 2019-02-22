@@ -72,19 +72,20 @@ public class ReentrantLockTest {
     private void test() {
         String key = "key";
         Locker locker = lockTemplate.build(key);
-        int count = 3;
+        int count = 5;
         CountDownLatch countDownLatch = new CountDownLatch(count);
         ExecutorService fixedThreadPool = Executors.newFixedThreadPool(count);
         for (int i = 0; i < count; i++) {
-            final int index = i;
             fixedThreadPool.execute(() -> {
                 try {
                     System.out.println(Thread.currentThread().getName() + " try to lock");
                     if (locker.tryLock(100, TimeUnit.MILLISECONDS)) {
                         System.out.println(Thread.currentThread().getName() + " success to lock");
-                        System.out.println("index:" + index);
-                        System.out.println(Thread.currentThread().getName() + " 阻塞2000ms");
-                        Thread.sleep(2000);
+                        System.out.println(Thread.currentThread().getName() + " 阻塞5000ms");
+                        for (int j = 0; j < 5; j++) {
+                            System.out.println(Thread.currentThread().getName() + " 倒计时： " + (5 - j));
+                            Thread.sleep(1000);
+                        }
                         locker.release();
                         System.out.println(Thread.currentThread().getName() + " success to release");
                     } else {
