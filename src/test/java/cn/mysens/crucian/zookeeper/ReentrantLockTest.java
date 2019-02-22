@@ -9,6 +9,11 @@ import cn.mysens.crucian.redis.RedisClient;
 import cn.mysens.crucian.redis.RedisReentrantLock;
 import org.junit.Test;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -19,8 +24,27 @@ import static org.junit.Assert.assertTrue;
  */
 public class ReentrantLockTest {
 
+    private LockTemplate lockTemplate;
+
+    /**
+     * zookeeper测试
+     */
     @Test
-    public void zkLock() throws InterruptedException {
+    public void zkTest() {
+        initZkLock();
+        test();
+    }
+
+    /**
+     * redis测试
+     */
+    @Test
+    public void redisTest() {
+        initRedisLock();
+        test();
+    }
+
+    private void initZkLock() {
         //zk配置
         ZkConfig zkConfig = new ZkConfig();
         zkConfig.setNamespace("zk_test");
@@ -28,7 +52,66 @@ public class ReentrantLockTest {
         //zk客户端
         ZkClient zkClient = new ZkClient(zkConfig);
         //锁模板
-        LockTemplate lockTemplate = new ZkReentrantLock(zkClient);
+        lockTemplate = new ZkReentrantLock(zkClient);
+    }
+
+    private void initRedisLock() {
+        //redis配置
+        RedisConfig redisConfig = new RedisConfig();
+        SingleInstanceModeConfig singleInstanceModeConfig = new SingleInstanceModeConfig();
+        singleInstanceModeConfig.setAddress("redis://127.0.0.1:6379");
+        redisConfig.setSingleInstanceModeConfig(singleInstanceModeConfig);
+        redisConfig.setNamespace("redis_test");
+        redisConfig.setDefaultTimeout(60 * 1000);
+        //zk客户端
+        RedisClient redisClient = new RedisClient(redisConfig);
+        //锁模板
+        lockTemplate = new RedisReentrantLock(redisClient);
+    }
+
+    private void test() {
+        String key = "key";
+        Locker locker = lockTemplate.build(key);
+        int count = 3;
+        CountDownLatch countDownLatch = new CountDownLatch(count);
+        ExecutorService fixedThreadPool = Executors.newFixedThreadPool(count);
+        for (int i = 0; i < count; i++) {
+            final int index = i;
+            fixedThreadPool.execute(() -> {
+                try {
+                    System.out.println(Thread.currentThread().getName() + " try to lock");
+                    if (locker.tryLock(100, TimeUnit.MILLISECONDS)) {
+                        System.out.println(Thread.currentThread().getName() + " success to lock");
+                        System.out.println("index:" + index);
+                        System.out.println(Thread.currentThread().getName() + " 阻塞2000ms");
+                        Thread.sleep(2000);
+                        locker.release();
+                        System.out.println(Thread.currentThread().getName() + " success to release");
+                    } else {
+                        System.out.println(Thread.currentThread().getName() + " failed to lock");
+                    }
+                } catch (InterruptedException e) {
+                    System.out.println(Thread.currentThread().getName() + " error to lock");
+                    e.printStackTrace();
+                } finally {
+                    countDownLatch.countDown();
+                }
+
+            });
+        }
+
+        try {
+            countDownLatch.await();
+            System.out.println("执行成功");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            System.out.println("抛出异常");
+        }
+    }
+
+    @Test
+    public void zkLock() throws InterruptedException {
+        initZkLock();
         //锁操作
         String key = "id001";
         Locker locker = lockTemplate.build(key);
@@ -43,7 +126,7 @@ public class ReentrantLockTest {
                     Thread.sleep(1000);
                 }
                 System.out.println("start to release lock");
-                locker.release(key);
+                locker.release();
                 System.out.println("success to release lock");
             }else{
                 System.out.println("sorry, not possessing lock");
@@ -55,17 +138,7 @@ public class ReentrantLockTest {
 
     @Test
     public void redisLock() throws InterruptedException {
-        //redis配置
-        RedisConfig redisConfig = new RedisConfig();
-        SingleInstanceModeConfig singleInstanceModeConfig = new SingleInstanceModeConfig();
-        singleInstanceModeConfig.setAddress("redis://127.0.0.1:6379");
-        redisConfig.setSingleInstanceModeConfig(singleInstanceModeConfig);
-        redisConfig.setNamespace("redis_test");
-        redisConfig.setDefaultTimeout(30);
-        //zk客户端
-        RedisClient redisClient = new RedisClient(redisConfig);
-        //锁模板
-        LockTemplate lockTemplate = new RedisReentrantLock(redisClient);
+        initRedisLock();
         //锁操作
         String key = "id001";
         Locker locker = lockTemplate.build(key);
@@ -80,7 +153,7 @@ public class ReentrantLockTest {
                     Thread.sleep(1000);
                 }
                 System.out.println("start to release lock");
-                locker.release(key);
+                locker.release();
                 System.out.println("success to release lock");
             }else{
                 System.out.println("sorry, not possessing lock");

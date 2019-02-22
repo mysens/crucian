@@ -37,9 +37,9 @@ public class RedisLocker implements Locker {
     public boolean tryLock() throws InterruptedException {
         try {
             if(this.timeout > 0){
-                return locker.tryLock(100, timeout, timeUnit);
+                return locker.tryLock(0, timeout, timeUnit);
             }
-            return locker.tryLock(100,-1, timeUnit);
+            return locker.tryLock(0, -1, timeUnit);
         } catch (InterruptedException e) {
             throw e;
         } catch (Exception e) {
@@ -51,7 +51,10 @@ public class RedisLocker implements Locker {
     @Override
     public boolean tryLock(long waitTime, TimeUnit timeUnit) throws InterruptedException {
         try {
-            return locker.tryLock(100, waitTime, timeUnit);
+            if (this.timeout > 0) {
+                return locker.tryLock(waitTime, timeout, timeUnit);
+            }
+            return locker.tryLock(waitTime, -1, timeUnit);
         } catch (InterruptedException e) {
             throw e;
         } catch (Exception e) {
@@ -61,7 +64,7 @@ public class RedisLocker implements Locker {
     }
 
     @Override
-    public void release(String key) {
+    public void release() {
         try {
             locker.unlock();
         } catch (Throwable e) {

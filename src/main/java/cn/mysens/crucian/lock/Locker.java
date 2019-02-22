@@ -18,18 +18,17 @@ public interface Locker {
 
     /**
      * 尝试获取锁
-     * @param timeout
-     * @param timeUnit
+     * @param waitTime 等待时间
+     * @param timeUnit 时间单位
      * @return
      * @throws InterruptedException
      */
-    boolean tryLock(long timeout, TimeUnit timeUnit) throws InterruptedException;
+    boolean tryLock(long waitTime, TimeUnit timeUnit) throws InterruptedException;
 
     /**
      * 释放锁
-     * @param key
      */
-    void release(String key);
+    void release();
 
     /**
      * 是否持有锁

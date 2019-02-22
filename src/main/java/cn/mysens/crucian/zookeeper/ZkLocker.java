@@ -26,7 +26,7 @@ public class ZkLocker implements Locker {
     @Override
     public boolean tryLock() throws InterruptedException {
         try {
-            return locker.acquire(0, null);
+            return locker.acquire(0, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             throw e;
         } catch (Exception e) {
@@ -48,7 +48,7 @@ public class ZkLocker implements Locker {
     }
 
     @Override
-    public void release(String key) {
+    public void release() {
         try {
             locker.release();
         } catch (Throwable e) {
