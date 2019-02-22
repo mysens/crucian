@@ -9,7 +9,7 @@ import cn.mysens.crucian.redis.RedisClient;
 import cn.mysens.crucian.redis.RedisReentrantLock;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * <br>
@@ -24,7 +24,6 @@ public class ReentrantLockTest {
         //zk配置
         ZkConfig zkConfig = new ZkConfig();
         zkConfig.setNamespace("zk_test");
-        zkConfig.setDefaultTimeout(30);
         zkConfig.setZkHosts("127.0.0.1:2181");
         //zk客户端
         ZkClient zkClient = new ZkClient(zkConfig);
