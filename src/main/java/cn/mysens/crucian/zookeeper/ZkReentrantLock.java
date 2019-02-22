@@ -1,7 +1,7 @@
 package cn.mysens.crucian.zookeeper;
 
-import cn.mysens.crucian.lock.Locker;
 import cn.mysens.crucian.lock.LockTemplate;
+import cn.mysens.crucian.lock.Locker;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.slf4j.Logger;
@@ -29,10 +29,6 @@ public class ZkReentrantLock implements LockTemplate {
      */
     private static final String ROOT_PATH = "/LOCK_ROOT/";
 
-    /**
-     * 默认超时时间
-     */
-    private long timeout = -1L;
 
     /**
      * 锁前缀
@@ -51,7 +47,6 @@ public class ZkReentrantLock implements LockTemplate {
 
     private void init(ZkClient zkClient){
         this.keyPrefix = ROOT_PATH + zkClient.getNamespace() + SEPARATOR;
-        this.timeout = zkClient.getTimeout();
         this.client = zkClient.getClient();
         if(client == null){
             throw new RuntimeException("zk client is not initialize!");
@@ -62,17 +57,20 @@ public class ZkReentrantLock implements LockTemplate {
     public Locker build(String key) {
         String realKey = this.keyPrefix + key;
         InterProcessMutex interProcessMutex = new InterProcessMutex(client, realKey);
-        if(timeout>0){
-            return new ZkLocker(interProcessMutex, timeout, TimeUnit.MILLISECONDS);
-        }
         return new ZkLocker(interProcessMutex);
     }
 
+    /**
+     * zk锁不存在过期时间
+     *
+     * @param key
+     * @param timeout
+     * @param timeUnit
+     * @return
+     */
     @Override
     public Locker build(String key, long timeout, TimeUnit timeUnit) {
-        String realKey = this.keyPrefix + key;
-        InterProcessMutex interProcessMutex = new InterProcessMutex(client, realKey);
-        return new ZkLocker(interProcessMutex, timeout, timeUnit);
+        return build(key);
     }
 
 }

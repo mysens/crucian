@@ -8,7 +8,15 @@ package cn.mysens.crucian.config;
  */
 public class RedisConfig extends LockConfig{
 
+    /**
+     * 密码
+     */
     private String password;
+
+    /**
+     * 默认超时时间
+     */
+    private long defaultTimeout;
 
     private ClusterModeConfig clusterModeConfig;
 
@@ -26,6 +34,14 @@ public class RedisConfig extends LockConfig{
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public long getDefaultTimeout() {
+        return defaultTimeout;
+    }
+
+    public void setDefaultTimeout(long defaultTimeout) {
+        this.defaultTimeout = defaultTimeout;
     }
 
     public ClusterModeConfig getClusterModeConfig() {

@@ -20,18 +20,12 @@ public class ZkClient {
     private String namespace;
 
     /**
-     * 默认超时时间
-     */
-    private long timeout;
-
-    /**
      * Zookeeper client
      */
     private CuratorFramework client;
 
     public ZkClient(ZkConfig config) {
         this.namespace = config.getNamespace();
-        this.timeout = config.getDefaultTimeout();
         RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
         client = CuratorFrameworkFactory.newClient(config.getZkHosts(), retryPolicy);
         client.start();
@@ -39,10 +33,6 @@ public class ZkClient {
 
     public String getNamespace() {
         return namespace;
-    }
-
-    public long getTimeout() {
-        return timeout;
     }
 
     public CuratorFramework getClient() {

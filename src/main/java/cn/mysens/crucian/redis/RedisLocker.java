@@ -49,9 +49,9 @@ public class RedisLocker implements Locker {
     }
 
     @Override
-    public boolean tryLock(long timeout, TimeUnit timeUnit) throws InterruptedException {
+    public boolean tryLock(long waitTime, TimeUnit timeUnit) throws InterruptedException {
         try {
-            return locker.tryLock(100, timeout, timeUnit);
+            return locker.tryLock(100, waitTime, timeUnit);
         } catch (InterruptedException e) {
             throw e;
         } catch (Exception e) {

@@ -19,27 +19,14 @@ public class ZkLocker implements Locker {
 
     private InterProcessLock locker;
 
-    private long timeout = -1;
-
-    private TimeUnit timeUnit = TimeUnit.MILLISECONDS;
-
     ZkLocker(InterProcessLock interProcessLock) {
-        locker = interProcessLock;
-    }
-
-    ZkLocker(InterProcessLock interProcessLock, long timeout, TimeUnit timeUnit) {
         this.locker = interProcessLock;
-        this.timeout = timeout;
-        this.timeUnit = timeUnit;
     }
 
     @Override
     public boolean tryLock() throws InterruptedException {
         try {
-            if(this.timeout > 0){
-                return locker.acquire(timeout, timeUnit);
-            }
-            return locker.acquire(-1, null);
+            return locker.acquire(0, null);
         } catch (InterruptedException e) {
             throw e;
         } catch (Exception e) {
@@ -49,9 +36,9 @@ public class ZkLocker implements Locker {
     }
 
     @Override
-    public boolean tryLock(long timeout, TimeUnit timeUnit) throws InterruptedException {
+    public boolean tryLock(long waitTime, TimeUnit timeUnit) throws InterruptedException {
         try {
-            return locker.acquire(timeout, timeUnit);
+            return locker.acquire(waitTime, timeUnit);
         } catch (InterruptedException e) {
             throw e;
         } catch (Exception e) {

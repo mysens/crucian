@@ -13,11 +13,6 @@ public class LockConfig {
      */
     private String namespace;
 
-    /**
-     * 默认超时时间
-     */
-    private long defaultTimeout;
-
     public String getNamespace() {
         return namespace;
     }
@@ -26,11 +21,4 @@ public class LockConfig {
         this.namespace = namespace;
     }
 
-    public long getDefaultTimeout() {
-        return defaultTimeout;
-    }
-
-    public void setDefaultTimeout(long defaultTimeout) {
-        this.defaultTimeout = defaultTimeout;
-    }
 }
